@@ -1,5 +1,10 @@
 
 
+music = {
+	['dream'] = nil,--createNewMusic('dreammusic.ogg', 0.0)
+	['real'] = nil--createNewMusic('realmusic.ogg', 1.0)
+}
+
 --[[
 	works like #include
 ]]
@@ -94,23 +99,13 @@ end
 
 local step = 0
 local function doGhostEffects()
-	step = step+1
-	--[[
-	love.graphics.setColor(HSL((step/40)%6, math.sin(step/30*3)*0.3+0.7, math.sin(step/30)*0.3+0.7, 80))
-	love.graphics.draw(bg, 0, 0)
-	]]
-	local s = 16
-	for i=1, WINW/s do
-		for j=1, WINH/s do
-			local x = i-1
-			local y = j-1
-			
-			love.graphics.setColor(80, 80, 200, math.random(40, 70))
-			love.graphics.rectangle("fill", x*s, y*s, s, s)
-		end
-	end
+	step = step + 1
 
+	love.graphics.setColor(HSL((step/40)%6, math.sin(step/30*3)*0.3+0.7, math.sin(step/30)*0.3+0.7, 90))
+	love.graphics.draw(bg, 0, 0)
 end
+
+
 function love.draw()
 	
 	local aply = getActivePlayer()
@@ -199,4 +194,9 @@ function HSL(hue, saturation, lightness, alpha)
     return (r+m)*255,(g+m)*255,(b+m)*255,alpha
 end
 
-
+function createNewMusic(filePath, volume) 
+	local audio 
+	audio = love.audio.newSource(filePath)
+	audio.setVolume(volume)
+	return audio
+end
