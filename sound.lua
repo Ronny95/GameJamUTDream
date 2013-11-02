@@ -25,14 +25,12 @@ function fadeSound(music_obj)
 		music_obj.audio:setVolume(music_obj.volume)
 
 		local mus = music['dream']
-		if not mus.audio:isPlaying() then
-			love.audio.play(mus.audio)
-		end
+		love.audio.play(mus.audio)
 		mus.volume = mus.volume + 0.05
 		mus.audio:setVolume(mus.volume)
 
 		if music_obj.volume <= 0.0 then
-			music_obj.audio:stop()
+			love.audio.stop(music_obj.audio)
 		end
 	elseif music_obj == music['dream'] and music_obj.volume > 0.0 then
 		music_obj.volume = music_obj.volume - 0.05
@@ -46,7 +44,7 @@ function fadeSound(music_obj)
 		mus.audio:setVolume(mus.volume)
 
 		if music_obj.volume <= 0.0 then
-			music_obj.audio:stop()
+			love.audio.stop(music_obj.audio)
 		end
 	end
 end
