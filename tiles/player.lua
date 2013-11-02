@@ -41,11 +41,17 @@ end
 
 Player._move = Player.move
 function Player:move(direction)
-	if not self.move_dir then
+	--[[if not self.move_dir then
 		self.faceDir = math.floor(direction / 90 + 0.5)
-	end
-	if self:_move(direction) then
+	end]]
+	
+	local moved, block = self:_move(direction, true)
+	if moved then
 		self.map:playerOn(self:getX(), self:getY(), self)
+	elseif block then
+		if block:playerPush(self, self.faceDir, direction) then
+			self:_move(direction)
+		end
 	end
 end
 

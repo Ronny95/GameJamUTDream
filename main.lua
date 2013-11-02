@@ -32,8 +32,12 @@ ghost = nil
 realMap = nil
 ghostMap = nil
 
+local bg
+
 function love.load()
 	love.graphics.setMode(WINW, WINH, false, true, 0)
+	
+	bg = love.graphics.newImage("assets/images/dreambg.png")
 	
 	loadTileset("assets/images/tileset.png")
 	
@@ -57,7 +61,8 @@ function love.load()
 	ghostMap:setTile(3, 3, 2, realMap:createTile(3, 3, 2, textures[2]):setSolid(true, false)).activate = function() changeForm() end
 	ghostMap:createTile(6, 2, 2, textures[8]):setSolid(false, true)
 	
-	--ghostMap:setTile()
+	local boulder = Boulder:new(1, 2)
+	ghostMap:setTile(1, 2, 2, realMap:setTile(1, 2, 2, boulder))
 	
 	ghostMap:setTile(5, 0, 2, realMap:createTile(5, 0, 2, textures[998]):setSolid(true, true))
 	
@@ -72,7 +77,14 @@ function love.update(delta)
 	updateTiles(delta)
 end
 
+local step = 0
 local function doGhostEffects()
+	step = step+1
+	
+	love.graphics.setColor(HSL((step/40)%6, 1--[[math.sin(step/30*3)*0.3+0.7]], 1--[[math.sin(step/30)*0.3+0.7]], 80))
+	love.graphics.draw(bg, 0, 0)
+	
+	--[[
 	local s = 16
 	for i=1, WINW/s do
 		for j=1, WINH/s do
@@ -82,7 +94,7 @@ local function doGhostEffects()
 			love.graphics.setColor(80, 80, 200, math.random(40, 70))
 			love.graphics.rectangle("fill", x*s, y*s, s, s)
 		end
-	end
+	end]]
 end
 
 function love.draw()
@@ -137,6 +149,37 @@ function love.keypressed(key)
 	if key == "e" then
 		getActivePlayer():use()
 	end
+end
+
+function HSL(hue, saturation, lightness, alpha)
+    if hue < 0 or hue > 360 then
+        return 0, 0, 0, alpha
+    end
+    if saturation < 0 or saturation > 1 then
+        return 0, 0, 0, alpha
+    end
+    if lightness < 0 or lightness > 1 then
+        return 0, 0, 0, alpha
+    end
+    local chroma = (1 - math.abs(2 * lightness - 1)) * saturation
+    local h = hue/60
+    local x =(1 - math.abs(h % 2 - 1)) * chroma
+    local r, g, b = 0, 0, 0
+    if h < 1 then
+        r,g,b=chroma,x,0
+    elseif h < 2 then
+        r,b,g=x,chroma,0
+    elseif h < 3 then
+        r,g,b=0,chroma,x
+    elseif h < 4 then
+        r,g,b=0,x,chroma
+    elseif h < 5 then
+        r,g,b=x,0,chroma
+    else
+        r,g,b=chroma,0,x
+    end
+    local m = lightness - chroma/2
+    return (r+m)*255,(g+m)*255,(b+m)*255,alpha
 end
 
 

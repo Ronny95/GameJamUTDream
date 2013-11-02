@@ -52,16 +52,20 @@ function Map:solidAt(x, y, inGhost)
 		if not inGhost then
 			local tile = layer:getTile(x, y)
 			if tile and tile:isRealSolid() then
-				return true
+				return tile
 			end
 		else
 			local tile = layer:getTile(x, y)
 			if tile and tile:isGhostSolid() then
-				return true
+				return tile
 			end
 		end
 	end
 	return false
+end
+
+function Map:removeTile(x, y, l)
+	self.layers[l]:setTile(x, y, nil)
 end
 
 function Map:setTile(x, y, l, tile)
