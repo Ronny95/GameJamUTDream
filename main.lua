@@ -62,9 +62,20 @@ function love.load()
 	ghostMap:setLayer(1, floor)
 	ghostMap:setLayer(2, Layer:new())
 	
-	ghostMap:setTile(5, 5, 2, realMap:createTile(5, 5, 2, textures[6]):setSolid(true, false)).playerOn = function(_, ply) if ply.isGhost then print("You float over the hole!") end end
-	ghostMap:setTile(3, 2, 2, realMap:createTile(3, 2, 2, textures[1]):setSolid(true, false)).activate = function() changeForm() end
-	ghostMap:setTile(3, 3, 2, realMap:createTile(3, 3, 2, textures[2]):setSolid(true, false)).activate = function() changeForm() end
+	ghostMap:setTile(5, 5, 2, realMap:createTile(5, 5, 2, textures[6]):setSolid(true, false)).playerOn = 
+		function(_, ply) 
+			if ply.isGhost then 
+				print("You float over the hole!") 
+			end
+		end
+	ghostMap:setTile(3, 2, 2, realMap:createTile(3, 2, 2, textures[1]):setSolid(true, false)).activate = 
+		function() 
+			changeForm() 
+		end
+	ghostMap:setTile(3, 3, 2, realMap:createTile(3, 3, 2, textures[2]):setSolid(true, false)).activate = 
+		function() 
+			changeForm() 
+		end
 	ghostMap:createTile(6, 2, 2, textures[8]):setSolid(false, true)
 	
 	local boulder = Boulder:new(1, 2)
