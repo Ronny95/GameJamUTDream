@@ -1,135 +1,82 @@
-STRICT = true
-DEBUG = true
 
-TILEW = 32
-TILEH = 32
+
 
 include = function(file)
 	love.filesystem.load(file)()
 end
 
-require 'zoetrope'
+--------------------------------------------------
 
-local app = {}
-local tiles = {}
-
-local function loadTile(x, y)
-	local tileData = {}
-	tileData.width = TILEW
-	tileData.height = TILEH
-	tileData.image = 'assets/images/spritesheet.png'
-	tileData.imageOffset = {}
-	tileData.imageOffset.x = x*TILEW
-	tileData.imageOffset.y = y*TILEH
+textures = {
+	[1 ] = { 0,  0}, -- Bed Top
+	[2 ] = { 0,  1}, -- Bed Bottom
 	
-	return Tile:new(tileData)
-end
-
---------------------------------------------------
-
-
-local mapData = {}
-mapData.spriteHeight = TILEW
-mapData.spriteWidth = TILEH
-
-function mapData:onNew()
-	self:loadMap(self.mapPath)
-end
-
-local GameMap = Map:extend(mapData)
-
---------------------------------------------------
-
-local playerData = {}
-
-playerData.width = TILEW
-playerData.height = TILEH
-playerData.image = 'assets/images/spritesheet.png'
-playerData.imageOffset = {x = 0, y= 0}
-playerData.sequences = 
-{
-	right = { frames = { 1 }, fps = 10},
-	left  = { frames = { 1 }, fps = 10},
-	up    = { frames = { 1 }, fps = 10},
-	down  = { frames = { 1 }, fps = 10}
+	[3 ] = { 1,  0}, -- Spikes Blue
+	[4 ] = { 3,  1}, -- Spikes Red
+	
+	[5 ] = { 1,  1}, -- Boulder
+	[6 ] = { 6,  1}, -- Hole
+	[7 ] = { 7,  1}, -- Pressure Plate
+	
+	[8 ] = { 2,  1}, -- Star
+	[9 ] = { 4,  1}, -- Sign
+	[10] = { 5,  1}, -- Lantern
 }
 
-function playerData:onUpdate(elapsed)
-	if the.keys:pressed('a') then
-		self.velocity.x = -100
-		self.velocity.y = 0
-		self.play('left')
-	elseif the.keys:pressed('e') or the.keys:pressed('d') then
-		self.velocity.x = 100
-		self.velocity.y = 0
-		self.play('right')
-	elseif the.keys:pressed(',') or the.keys:pressed('w') then
-		self.velocity.y = -100
-		self.velocity.x = 0
-		self.play('up')
-	elseif the.keys:pressed('o') or the.keys:pressed('s') then
-		self.velocity.y = 100
-		self.velocity.x = 0
-		self.play('down')	
-	else
-		self.velocity.x = 0
-		self.velocity.y = 0
-	end
-	if (self.x < 0 and the.keys:pressed('a')) or (self.x >  the.app.width and the.keys:pressed('d')) then
-		self.velocity.x = 0
-	end
-	if (self.y < 0 and the.keys:pressed('w')) or (self.y > the.app.height and the.keys:pressed('s')) then
-		self.velocity.y = 0
-	end
+--------------------------------------------------
+
+local Texture = {}
+Texture.__index = Texture
+Texture.image = nil
+Texture.quad = nil
+
+function Texture:draw(x, y)
+	love.graphics.drawq(self.image, self.quad, x, y)
 end
 
-function playerData:onCollide(object)
-	print(object)
+function newTexture(image, x, y)
+	local image = image
+	local quad = love.graphics.newQuad(x*TILEW, y*TILEH, TILEW, TILEH, image:getWidth(), image:getHeight())
+	
+	local texture = setmetatable({}, Texture)
+	texture.image = image
+	texture.quad = quad
+	
+	return texture
 end
-
-local Player = Animation:extend(playerData)
 
 --------------------------------------------------
 
-local appData = {}
-appData.inDream = false
+local Layer = {}
+Layer.__index = Map
+Layer.tiles = {}
 
-function appData:onRun()
-	tiles[1] = loadTile(0, 0)
-	tiles[2] = loadTile(1, 0)
-	
-	include("menu.lua")
-	
-	self.player = Player:new{ x = 0, y = 0 }
-	self:add(self.player)
-	
-	self.mapReal  = GameMap:new{mapPath = "assets/maps/real_00.txt" , sprites = tiles}
-	self.mapDream = GameMap:new{mapPath = "assets/maps/dream_00.txt", sprites = tiles}
-	
-	self.inDream = true
-	self:toggleStates()
+function Layer:setTileID(x, y, id)
+	tiles[x+","+y] = id
+end
+function Layer:getTileID(x, y)
+	return tiles[x+","+y]
 end
 
-function appData:onUpdate()
-	-- doesn't do anything yet
-end
+--------------------------------------------------
 
-function appData:toggleStates()
-	self.inDream = not self.inDream
-	if not self.inDream then
-		self:remove(self.mapDream)
-		self:add(self.mapReal)
-	else
-		self:remove(self.mapReal)
-		self:add(self.mapDream)
+local function loadTileset(path)
+	local img = love.graphics.newImage(path)
+	
+	for k,v in pairs(textures) do
+		textures[k] = newTexture(img, v[1], v[2])
+		print(textures[k])
 	end
 end
 
-function appData:isInDream()
-	return self.inDream
+function love.load()
+	loadTileset("assets/images/tileset.png")
 end
 
-local GameApp = App:extend(appData)
-the.app = GameApp:new()
+function love.update(delta)
+	
+end
 
-
+function love.draw()
+	
+end
