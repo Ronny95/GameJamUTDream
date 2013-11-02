@@ -4,6 +4,10 @@ DEBUG = true
 TILEW = 32
 TILEH = 32
 
+include = function(file)
+	love.filesystem.load(file)()
+end
+
 require 'zoetrope'
 
 local app = {}
@@ -13,7 +17,7 @@ local function loadTile(x, y)
 	local tileData = {}
 	tileData.width = TILEW
 	tileData.height = TILEH
-	tileData.image = 'spritesheet.png'
+	tileData.image = 'assets/images/spritesheet.png'
 	tileData.imageOffset = {}
 	tileData.imageOffset.x = x*TILEW
 	tileData.imageOffset.y = y*TILEH
@@ -40,7 +44,7 @@ local playerData = {}
 
 playerData.width = TILEW
 playerData.height = TILEH
-playerData.image = 'spritesheet.png'
+playerData.image = 'assets/images/spritesheet.png'
 playerData.imageOffset = {x = 0, y= 0}
 playerData.sequences = 
 {
@@ -88,22 +92,44 @@ local Player = Animation:extend(playerData)
 --------------------------------------------------
 
 local appData = {}
-
+appData.inDream = false
 
 function appData:onRun()
 	tiles[1] = loadTile(0, 0)
 	tiles[2] = loadTile(1, 0)
 	
-	self.mapReal  = GameMap:new{mapPath = "maps/real_00.txt" , sprites = tiles}
-	self.mapDream = GameMap:new{mapPath = "maps/dream_00.txt", sprites = tiles}
-	self:add(self.map)
+	include("menu.lua")
+	
 	self.player = Player:new{ x = 0, y = 0 }
 	self:add(self.player)
+	
+	self.mapReal  = GameMap:new{mapPath = "assets/maps/real_00.txt" , sprites = tiles}
+	self.mapDream = GameMap:new{mapPath = "assets/maps/dream_00.txt", sprites = tiles}
+	
+	self.inDream = true
+	self:toggleStates()
 end
 
 function appData:onUpdate()
 	-- doesn't do anything yet
 end
 
+function appData:toggleStates()
+	self.inDream = not self.inDream
+	if not self.inDream then
+		self:remove(self.mapDream)
+		self:add(self.mapReal)
+	else
+		self:remove(self.mapReal)
+		self:add(self.mapDream)
+	end
+end
+
+function appData:isInDream()
+	return self.inDream
+end
+
+local GameApp = App:extend(appData)
+the.app = GameApp:new()
 
 
