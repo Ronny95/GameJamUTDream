@@ -84,11 +84,10 @@ end
 local step = 0
 local function doGhostEffects()
 	step = step+1
-	
-	love.graphics.setColor(HSL((step/40)%6, 1--[[math.sin(step/30*3)*0.3+0.7]], 1--[[math.sin(step/30)*0.3+0.7]], 80))
-	love.graphics.draw(bg, 0, 0)
-	
 	--[[
+	love.graphics.setColor(HSL((step/40)%6, math.sin(step/30*3)*0.3+0.7, math.sin(step/30)*0.3+0.7, 80))
+	love.graphics.draw(bg, 0, 0)
+	]]
 	local s = 16
 	for i=1, WINW/s do
 		for j=1, WINH/s do
@@ -100,7 +99,7 @@ local function doGhostEffects()
 		end
 	end
 
-	end]]
+end
 function love.draw()
 	
 	local aply = getActivePlayer()
