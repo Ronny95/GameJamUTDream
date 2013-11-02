@@ -13,11 +13,18 @@ GameView = View:extend
 	end
 }
 
+GameMap = Map:extend
+{
+	onNew = function(self)
+		self:loadMap('map.txt')
+	end
+}
+
 Player = Animation:extend
 {
 	width = 32,
 	height = 32,
-	image = 'player.png',
+	image = 'spritesheet.png',
 	sequences = 
 	{
 		right = { frames = { 1 }, fps = 10},
@@ -52,8 +59,6 @@ Player = Animation:extend
 	onCollide = function(self, other)
 		-- doesn't do anything yet
 	end
-
-
 }
 
 the.app = App:new
@@ -61,6 +66,7 @@ the.app = App:new
 	onRun = function (self)
 		self.player = Player:new{ x = 0, y = 0 }
 		self:add(self.player)
+		self.map = GameMap:new{}
 --		self.view = GameView:new{}
 	end,
 
