@@ -109,8 +109,8 @@ function love.draw()
 	
 	local aply = getActivePlayer()
 	
-	love.graphics.push()
-	love.graphics.translate(-aply:getX()*TILEW-aply.moveX + WINW/2, -aply:getY()*TILEH-aply.moveY + WINH/2)
+	--love.graphics.push()
+	--love.graphics.translate(-aply:getX()*TILEW-aply.moveX + WINW/2, -aply:getY()*TILEH-aply.moveY + WINH/2)
 	
 	love.graphics.setColor(255, 255, 255, 255)
 	if not inGhost then
