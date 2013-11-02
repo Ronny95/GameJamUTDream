@@ -105,7 +105,7 @@ end
 
 	Ex: 135 will round up to 180 rather than down to 90
 ]]
-function Tile:move(direction)
+function Tile:move(direction, notInMap)
 	if direction <= 360 then
 		direction = math.floor(direction / 90 + 0.5)
 		addUpdateTile(self)
@@ -126,8 +126,14 @@ function Tile:move(direction)
 		local newX = self.x+moveDir.x
 		local newY = self.y+moveDir.y
 		
-		if self.map:solidAt(newX, newY, self.isGhost) then
-			return false
+		local solidTile = self.map:solidAt(newX, newY, self.isGhost)
+		if solidTile then
+			return false, solidTile
+		end
+		
+		if not notInMap then
+			self.map:removeTile(self.x, self.y, 2)
+			self.map:setTile(newX, newY, 2, self)
 		end
 		
 		self.x = newX
@@ -145,7 +151,9 @@ end
 
 function Tile:activate(player) end
 function Tile:playerOn(player) end
+function Tile:playerPush(player) return false end
 
 include("tiles/player.lua")
+include("tiles/boulder.lua")
 
 
