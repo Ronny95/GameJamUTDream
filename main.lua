@@ -1,5 +1,4 @@
 
-
 --[[
 	works like #include
 ]]
@@ -21,6 +20,7 @@ include("texture.lua")
 include("updates.lua")
 include("tile.lua")
 include("map.lua")
+include("sound.lua")
 
 
 --include("menu.lua")
@@ -38,6 +38,9 @@ local bg
 
 function love.load()
 	love.graphics.setMode(WINW, WINH, false, true, 0)
+
+	love.audio.play(music['real'].audio)
+	music['real'].audio:setVolume(music['real'].volume)
 	
 	bg = love.graphics.newImage("assets/images/dreambg.png")
 	
@@ -90,27 +93,18 @@ end
 
 function love.update(delta)
 	updateTiles(delta)
+	updateSound()
 end
 
 local step = 0
 local function doGhostEffects()
-	step = step+1
-	--[[
-	love.graphics.setColor(HSL((step/40)%6, math.sin(step/30*3)*0.3+0.7, math.sin(step/30)*0.3+0.7, 80))
-	love.graphics.draw(bg, 0, 0)
-	]]
-	local s = 16
-	for i=1, WINW/s do
-		for j=1, WINH/s do
-			local x = i-1
-			local y = j-1
-			
-			love.graphics.setColor(80, 80, 200, math.random(40, 70))
-			love.graphics.rectangle("fill", x*s, y*s, s, s)
-		end
-	end
+	step = step + 1
 
+	love.graphics.setColor(HSL((step/40)%6, math.sin(step/30*3)*0.3+0.7, math.sin(step/30)*0.3+0.7, 90))
+	love.graphics.draw(bg, 0, 0)
 end
+
+
 function love.draw()
 	
 	local aply = getActivePlayer()
@@ -199,4 +193,11 @@ function HSL(hue, saturation, lightness, alpha)
     return (r+m)*255,(g+m)*255,(b+m)*255,alpha
 end
 
+function updateSound()
+	if music['real'].audio:isLooping() and inGhost then
+		fadeSound(music['real'])
+	elseif music['dream'].audio:isLooping() and inGhost then
+		fadeSound(music['dream'])
+	end
+end
 
