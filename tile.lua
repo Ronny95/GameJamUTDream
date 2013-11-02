@@ -1,11 +1,8 @@
 --[[
 	This class is an outline for Tiles in the game
 
-	The constructor takes four parameters:
-		grid x-coordinate (already scaled down by tile size)
-		grid y-coordinate (also scaled down)
-		texture - takes a texture that contains an image and a quad
-			that can be rendered to the screen
+	Tile is an outline that is meant to be extended
+	in other parts of the game
 ]]
 
 Tile = table.copy(Base)
@@ -25,6 +22,16 @@ Tile.faceDir = nil
 Tile.moveX = 0
 Tile.moveY = 0
 
+--[[
+	Initializes a new Tile
+
+	params:
+		x - grid x-coordinate
+		y - grid y-coordinate
+		texture - the texture to draw on the specified tile
+		map - the map that the tile belongs to
+		isGhost - whether or not the Tile belongs to the GhostWorld
+]]
 function Tile:init(x, y, texture, map, isGhost)
 	self.x = x
 	self.y = y
@@ -35,10 +42,21 @@ function Tile:init(x, y, texture, map, isGhost)
 	self.faceDir = {x=1, y=0}
 end
 
+--[[
+	draws the Tile on the screen by invoking the draw function of the texture
+	component of the Tile
+]]
 function Tile:draw()
 	self.texture:draw(self.x * TILEW + self.moveX, self.y * TILEH + self.moveY)
 end
 
+--[[
+	updates the location of the Tile
+
+	params:
+		x - x-location to update the tile to
+		y - y-location to update the tile to
+]]
 function Tile:setLocation(x, y)
 	self.x = x
 	self.y = y
@@ -46,6 +64,10 @@ function Tile:setLocation(x, y)
 	return self
 end
 
+--[[
+	The following functions return various components of the Tile for use 
+	elsewhere in the game
+]]
 function Tile:getX()
 	return self.x
 end
@@ -58,6 +80,14 @@ function Tile:getMap()
 	return self.map
 end
 
+--[[
+	Sets whether the Tile is solid or not in the real world and ghost world
+
+	params:
+		realSolid - a value of "true" or "false" that tells you whether or not
+			the Tile is solid in the real world
+		ghostSolid - the same as realSolid but for the ghost world
+]]
 function Tile:setSolid(realSolid, ghostSolid)
 	self.solidReal  = realSolid
 	self.solidGhost = ghostSolid
@@ -65,10 +95,18 @@ function Tile:setSolid(realSolid, ghostSolid)
 	return self
 end
 
+--[[
+	returns "true" or "false" depending on whether or not the Tile is solid
+	in the real world
+]]
 function Tile:isRealSolid()
 	return self.solidReal
 end
 
+--[[
+	returns "true" or "false" depending on whether or not the Tile is solid
+	in the ghost world
+]]
 function Tile:isGhostSolid()
 	return self.solidGhost
 end
@@ -97,6 +135,8 @@ function Tile:update(delta)
 end
 
 --[[
+	Causes a Tile to move in a certain direction by one tile
+
 	params:
 		direction - 0 is right, 90 is up, 180 is left, 270 is down
 
@@ -123,8 +163,8 @@ function Tile:move(direction)
 		
 		self.faceDir = moveDir
 		
-		local newX = self.x+moveDir.x
-		local newY = self.y+moveDir.y
+		local newX = self.x + moveDir.x
+		local newY = self.y + moveDir.y
 		
 		if self.map:solidAt(newX, newY, self.isGhost) then
 			return false
@@ -143,6 +183,9 @@ function Tile:move(direction)
 	end
 end
 
+--[[
+	activate and playerOn are extendable functions that can be overwritten
+]]
 function Tile:activate(player) end
 function Tile:playerOn(player) end
 
