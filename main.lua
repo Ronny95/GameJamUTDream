@@ -195,9 +195,9 @@ end
 
 function updateSound()
 	if music['real'].audio:isLooping() and inGhost then
-		fadeSound(music['real'])
+		fadeSound(music['real'].audio)
 	elseif music['dream'].audio:isLooping() and inGhost then
-		fadeSound(music['dream'])
+		fadeSound(music['dream'].audio)
 	end
 end
 
