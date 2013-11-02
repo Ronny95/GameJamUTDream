@@ -22,8 +22,8 @@ soundfx = {
 }
 
 function initSound()
-	music['real'].audio:setLooping(true)
-	music['dream'].audio:setLooping(false)
+	-- music['real'].audio:setLooping(true)
+	-- music['dream'].audio:setLooping(true)
 
 	love.audio.play(music['real'].audio)
 	love.audio.setVolume(music['real'].volume)
@@ -46,16 +46,17 @@ function fadeSound(music_obj)
 
 		if not music['real'].audio:isLooping() and music['dream'].volume < 1.0 then
 			if not music['dream'].audio:isLooping() then
-				music['dream'].audio:isLooping(true)
+				music['dream'].audio:setLooping(true)
 				love.audio.play(music['dream'].audio)
 			end
 
 			music['dream'].volume = music['dream'].volume + 0.005
 			love.audio.setVolume(music['dream'].volume)
 		end
+	end
 
 	-- DREAM
-	elseif music_obj == music['dream'] then
+	if music_obj == music['dream'] then
 		if music['dream'].volume > 0.0 then
 			music['dream'].volume = music['dream'].volume - 0.005
 			love.audio.setVolume(music['dream'].volume)
@@ -64,12 +65,12 @@ function fadeSound(music_obj)
 		if music['dream'].volume <= 0.0 and music['dream'].audio:isLooping() then
 			music['dream'].volume = 0.0
 			love.audio.stop()
-			music['dream'].audio:isLooping(false)
+			music['dream'].audio:setLooping(false)
 		end
 
 		if not music['dream'].audio:isLooping() and music['real'].volume < 1.0 then
 			if not music['real'].audio:isLooping() then
-				music['real'].audio:isLooping(true)
+				music['real'].audio:setLooping(true)
 				love.audio.play(music['real'].audio)
 			end
 
