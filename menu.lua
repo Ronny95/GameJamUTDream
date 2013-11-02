@@ -2,7 +2,7 @@
 function love.load()
    --hamster = love.graphics.newImage("hamster.png")
    instructions = false;
-   instructionsText = "Controls \n\n Movement: ArrowKeys \n Instructions Instructions Instructions Instructions Instructions InstructionsInstructions Instructions InstructionsInstructions Instructions Instructions Instructions"
+   instructionsText = "Controls \n\n Movement: ArrowKeys OR WASD \n Enter dream mode: E(Must be near a bed) \n Wake up:F \n  Quit:esc \n\n Instructions \n\n Solve puzzles and get to the star"
    success = love.graphics.setMode( 640, 640, false, false, 0 )
    X = love.graphics.getWidth()
    Y = love.graphics.getHeight()
@@ -22,7 +22,7 @@ function love.load()
    instructWidth = iFont:getWidth(instructionsText)/2
    --love.graphics.setBackgroundColor(125,125,255)
    love.graphics.setFont(mFont)
-   background = love.graphics.newImage("dreambg.png")
+   background = love.graphics.newImage("assets/images/dreambg.png")
    music = love.audio.newSource("assets/audio/dream.mp3")
    music:setLooping(true)
    love.audio.play(music)

@@ -72,8 +72,8 @@ function love.draw()
 	
 	local aply = getActivePlayer()
 	
-	love.graphics.push()
-	love.graphics.translate(-aply:getX()*TILEW-aply.moveX + WINW/2, -aply:getY()*TILEH-aply.moveY + WINH/2)
+	--love.graphics.push()
+	--love.graphics.translate(-aply:getX()*TILEW-aply.moveX + WINW/2, -aply:getY()*TILEH-aply.moveY + WINH/2)
 	
 	love.graphics.setColor(255, 255, 255, 255)
 	if not inGhost then
@@ -157,9 +157,9 @@ function HSL(hue, saturation, lightness, alpha)
 end
 
 function updateSound()
-	if music['real'].audio:isLooping() and inGhost then
+	if (music['real'].audio:isLooping() or music['dream'].volume < 1.0) and inGhost then
 		fadeSound(music['real'])
-	elseif music['dream'].audio:isLooping() and inGhost then
+	elseif (music['dream'].audio:isLooping() or music['real'].volume < 1.0) and not inGhost then
 		fadeSound(music['dream'])
 	end
 end

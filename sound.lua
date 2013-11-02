@@ -1,5 +1,7 @@
 -- music and audio
 
+musicPlaying = 'real'
+
 music = {
 	['dream'] = {
 		volume = 0.0,
@@ -19,34 +21,61 @@ soundfx = {
 	['statue'] = love.audio.newSource('assets/audio/statue.wav')
 }
 
+function initSound()
+	-- music['real'].audio:setLooping(true)
+	-- music['dream'].audio:setLooping(true)
+
+	love.audio.play(music['real'].audio)
+	love.audio.setVolume(music['real'].volume)
+end
+
 function fadeSound(music_obj)
-	if music_obj == music['real'] and music_obj.volume > 0.0 then
-		music_obj.volume = music_obj.volume - 0.05
-		music_obj.audio:setVolume(music_obj.volume)
 
-		local mus = music['dream']
-		if not mus.audio:isPlaying() then
-			love.audio.play(mus.audio)
+	-- REAL
+	if music_obj == music['real'] then
+		if music['real'].volume > 0.0 then
+			music['real'].volume = music['real'].volume - 0.005
+			love.audio.setVolume(music['real'].volume)
 		end
-		mus.volume = mus.volume + 0.05
-		mus.audio:setVolume(mus.volume)
 
-		if music_obj.volume <= 0.0 then
-			music_obj.audio:stop()
+		if music['real'].volume <= 0.0 and music['real'].audio:isLooping() then
+			music['real'].volume = 0.0
+			love.audio.stop()
+			music['real'].audio:setLooping(false)
 		end
-	elseif music_obj == music['dream'] and music_obj.volume > 0.0 then
-		music_obj.volume = music_obj.volume - 0.05
-		music_obj.audio:setVolume(music_obj.volume)
 
-		local mus = music['dream']
-		if not mus.audio:isPlaying() then
-			love.audio.play(mus.audio)
+		if not music['real'].audio:isLooping() and music['dream'].volume < 1.0 then
+			if not music['dream'].audio:isLooping() then
+				music['dream'].audio:setLooping(true)
+				love.audio.play(music['dream'].audio)
+			end
+
+			music['dream'].volume = music['dream'].volume + 0.005
+			love.audio.setVolume(music['dream'].volume)
 		end
-		mus.volume = mus.volume + 0.05
-		mus.audio:setVolume(mus.volume)
+	end
 
-		if music_obj.volume <= 0.0 then
-			music_obj.audio:stop()
+	-- DREAM
+	if music_obj == music['dream'] then
+		if music['dream'].volume > 0.0 then
+			music['dream'].volume = music['dream'].volume - 0.005
+			love.audio.setVolume(music['dream'].volume)
+		end
+
+		if music['dream'].volume <= 0.0 and music['dream'].audio:isLooping() then
+			music['dream'].volume = 0.0
+			love.audio.stop()
+			music['dream'].audio:setLooping(false)
+		end
+
+		if not music['dream'].audio:isLooping() and music['real'].volume < 1.0 then
+			if not music['real'].audio:isLooping() then
+				music['real'].audio:setLooping(true)
+				love.audio.play(music['real'].audio)
+			end
+
+			music['real'].volume = music['real'].volume + 0.005
+			love.audio.setVolume(music['real'].volume)
 		end
 	end
 end
