@@ -4,6 +4,12 @@ require 'zoetrope'
 
 local app = {}
 
+--[[
+app["onRun"] = function(self)
+app.onRun = function(self)
+function app.onRun(self)
+]]
+
 function app:onRun()
 	local obj = {}
 	obj.width = 16
