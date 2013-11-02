@@ -5,7 +5,7 @@
 -- Extends:
 --		<Sprite>
 
-Fill = Sprite:extend{
+Fill = Sprite:extend {
 	-- Property: fill
 	-- A table of color values in RGBA order. Each value should fall
 	-- between 0 and 255. The fill sprite fills this color in its bounds
@@ -21,7 +21,9 @@ Fill = Sprite:extend{
 	draw = function (self, x, y)
 		x = math.floor(x or self.x)
 		y = math.floor(y or self.y)
-		if not self.visible or self.alpha <= 0 then return end
+		if not self.visible or self.alpha <= 0 then 
+			return 
+		end
 		
 		if STRICT then
 			assert(type(x) == 'number', 'visible fill does not have a numeric x property')
