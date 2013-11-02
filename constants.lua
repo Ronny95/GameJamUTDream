@@ -1,6 +1,6 @@
 
 -- move animation speed scale factor
-MOVESCALE = 1
+MOVESCALE = 150
 
 -- Tile width and height in pixels
 TILEW = 64
