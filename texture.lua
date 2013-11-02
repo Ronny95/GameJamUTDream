@@ -14,6 +14,10 @@ textures = {
 	[9 ] = { 4,  1}, -- Sign
 	[10] = { 5,  1}, -- Lantern
 	
+	[11] = { 4,  0}, -- Player Forward
+	[12] = { 5,  0}, -- Player Left
+	[13] = { 6,  0}, -- Player Right
+	[14] = { 7,  0}, -- Player Back
 	
 	[998] = {3, 0}, -- Dev Ghost Tile Blue
 	[999] = {2, 0}, -- Dev Real  Tile Grey

@@ -126,7 +126,7 @@ function Tile:move(direction)
 		local newX = self.x+moveDir.x
 		local newY = self.y+moveDir.y
 		
-		if solidAt(newX, newY, self.isGhost) then
+		if self.map:solidAt(newX, newY, self.isGhost) then
 			return false
 		end
 		
@@ -144,6 +144,7 @@ function Tile:move(direction)
 end
 
 function Tile:activate(player) end
+function Tile:playerOn(player) end
 
 include("tiles/player.lua")
 

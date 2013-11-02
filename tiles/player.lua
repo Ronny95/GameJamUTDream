@@ -2,9 +2,6 @@
 Player = table.copy(Tile)
 Player.__index = Player
 
-Player.isGhost = false
-Player.faceDir = 0
-
 -- Save the Tile update function
 Player._update = Player.update
 function Player:update(delta)
@@ -30,6 +27,16 @@ function Player:update(delta)
 			self:move(0)
 		end
 	end
+	
+	if self.faceDir.x > 0 then
+		self.texture = textures[12]
+	elseif self.faceDir.x < 0 then
+		self.texture = textures[13]
+	elseif self.faceDir.y > 0 then
+		self.texture = textures[11]
+	else
+		self.texture = textures[14]
+	end
 end
 
 Player._move = Player.move
@@ -37,14 +44,16 @@ function Player:move(direction)
 	if not self.move_dir then
 		self.faceDir = math.floor(direction / 90 + 0.5)
 	end
-	self:_move(direction)
+	if self:_move(direction) then
+		self.map:playerOn(self:getX(), self:getY(), self)
+	end
 end
 
 function Player:use()
 	local x = self.x + self.faceDir.x
 	local y = self.y + self.faceDir.y
 	
-	activate(x, y, self)
+	self.map:activate(x, y, self)
 end
 
 -- Initializer.

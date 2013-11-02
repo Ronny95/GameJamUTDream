@@ -66,6 +66,7 @@ end
 
 function Map:setTile(x, y, l, tile)
 	self.layers[l]:setTile(x, y, tile)
+	return tile
 end
 function Map:createTile(x, y, l, texture)
 	return self.layers[l]:createTile(x, y, texture, self)
@@ -79,15 +80,27 @@ function Map:activate(x, y, player)
 		end
 	end
 end
+function Map:playerOn(x, y, player)
+	for _,layer in pairs(self.layers) do
+		local tile = layer:getTile(x, y)
+		if tile then
+			tile:playerOn(player)
+		end
+	end
+end
 
 --------------------------------------------------
-
+--[[
 -- After all we only have 2 maps.
 
 function solidAt(x, y, inGhost)
 	return realMap:solidAt(x, y, inGhost) or ghostMap:solidAt(x, y, inGhost)
 end
 function activate(x, y, player)
-	realMap:activate(x, y, player)
-	ghostMap:activate(x, y, player)
+	if not player.isGhost then
+		realMap:activate(x, y, player)
+	else
+		ghostMap:activate(x, y, player)
+	end
 end
+]]
