@@ -167,13 +167,13 @@ function Tile:move(direction, notInMap)
 		local newY 
 
 		-- keeps the moveable objects from leaving the map area
-		if (self.x > 0 and moveDir.x == -1) or (self.x < MAPW and moveDir.x == 1) then
+		if (self.x > 0 and moveDir.x == -1) or (self.x < MAPW - 1 and moveDir.x == 1) then
 			newX = self.x + moveDir.x
 		else
 			newX = self.x
 		end
 
-		if (self.y > 0 and moveDir.y == -1) or (self.y < MAPH and moveDir.y == 1) then
+		if (self.y > 0 and moveDir.y == -1) or (self.y < MAPH - 1 and moveDir.y == 1) then
 			newY = self.y + moveDir.y
 		else
 			newY = self.y

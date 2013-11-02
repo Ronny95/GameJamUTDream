@@ -98,9 +98,9 @@ local function doGhostEffects()
 			love.graphics.setColor(80, 80, 200, math.random(40, 70))
 			love.graphics.rectangle("fill", x*s, y*s, s, s)
 		end
-	end]]
-end
+	end
 
+	end]]
 function love.draw()
 	
 	local aply = getActivePlayer()
