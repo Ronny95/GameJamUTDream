@@ -1,15 +1,20 @@
 STRICT = true
 DEBUG = true
-
 require 'zoetrope'
 
-the.app = App:new
-{
-	onNew = function (self)
-		self:add(Text:new
-		{
-			y = 300, width = the.app.width, align = 'center',
-			text = 'Welcome to Zoetrope! Edit main.lua to get started.'
-		})
-	end
-}
+local app = {}
+
+function app:onRun()
+	local obj = {}
+	obj.width = 16
+	obj.height = 16
+	obj.x = (self.width-16)/2
+	obj.y = (self.height-16)/2
+	obj.fill = {0, 0, 255}
+	obj.velocity = {}
+	obj.velocity.rotation = math.pi/2
+	
+	self:add(Fill:new(obj))
+end
+
+the.app = App:new(app)
