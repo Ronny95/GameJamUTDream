@@ -93,7 +93,7 @@ function Map:playerOn(x, y, player)
 	for _,layer in pairs(self.layers) do
 		local tile = layer:getTile(x, y)
 		if tile then
---			tile:playerOn(player)
+			tile:playerOn(player)
 		end
 	end
 end

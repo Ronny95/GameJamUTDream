@@ -19,6 +19,12 @@ textures = {
 	[13] = { 6,  0}, -- Player Right
 	[14] = { 7,  0}, -- Player Back
 	
+	[15] = { 6,  2},
+	[16] = { 7,  2},
+	
+	[17] = { 4,  2},
+	[18] = { 5,  2},
+	
 	[998] = {3, 0}, -- Dev Ghost Tile Blue
 	[999] = {2, 0}, -- Dev Real  Tile Grey
 }

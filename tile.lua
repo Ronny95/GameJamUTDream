@@ -47,7 +47,9 @@ end
 	component of the Tile
 ]]
 function Tile:draw()
-	self.texture:draw(self.x * TILEW + self.moveX, self.y * TILEH + self.moveY)
+	if self.texture then
+		self.texture:draw(self.x * TILEW + self.moveX, self.y * TILEH + self.moveY)
+	end
 end
 
 --[[
@@ -209,8 +211,8 @@ function Tile:activate(player)
 
 end
 
-function Tile:playerOn(player) 
-
+function Tile:playerOn(player)
+	
 end
 
 function Tile:playerPush(player) 
@@ -219,5 +221,6 @@ end
 
 include("tiles/player.lua")
 include("tiles/boulder.lua")
+include("tiles/lever.lua")
 
 
