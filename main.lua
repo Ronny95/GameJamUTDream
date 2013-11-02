@@ -5,18 +5,17 @@ require 'zoetrope'
 
 local app = {}
 
-GameView = View:extend
+RealMap = Map:extend
 {
 	onNew = function(self)
-		self.focus = the.player
-		self:clampTo(self.map)
+		self:loadMap('realmap.txt')
 	end
 }
 
-GameMap = Map:extend
+DreamMap = Map:extend
 {
 	onNew = function(self)
-		self:loadMap('map.txt')
+		self:loadMap('dreammap.txt')
 	end
 }
 
@@ -67,7 +66,6 @@ the.app = App:new
 		self.player = Player:new{ x = 0, y = 0 }
 		self:add(self.player)
 		self.map = GameMap:new{}
---		self.view = GameView:new{}
 	end,
 
 	onUpdate = function(self)
