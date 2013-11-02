@@ -23,6 +23,9 @@ function love.load()
    --love.graphics.setBackgroundColor(125,125,255)
    love.graphics.setFont(mFont)
    background = love.graphics.newImage("dreambg.png")
+   music = love.audio.newSource("assets/audio/dream.mp3")
+   music:setLooping(true)
+   love.audio.play(music)
 end
 
 function love.mousepressed(x, y, button)
