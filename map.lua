@@ -10,6 +10,11 @@ end
 function Layer:setTile(x, y, tile)
 	self.tiles[x+y*MAPW] = tile
 end
+function Layer:createTile(x, y, texture, map)
+	local tile = Tile:new(x, y, texture, map)
+	self.tiles[x+y*MAPW] = tile
+	return tile
+end
 function Layer:getTile(x, y)
 	return self.tiles[x+y*MAPW]
 end
@@ -36,4 +41,53 @@ function Map:getLayer(i, layer)
 	return self.layers[i]
 end
 
+function Map:draw()
+	for _,layer in pairs(self.layers) do
+		layer:draw()
+	end
+end
 
+function Map:solidAt(x, y, inGhost)
+	for _,layer in pairs(self.layers) do
+		if not inGhost then
+			local tile = layer:getTile(x, y)
+			if tile and tile:isRealSolid() then
+				return true
+			end
+		else
+			local tile = layer:getTile(x, y)
+			if tile and tile:isGhostSolid() then
+				return true
+			end
+		end
+	end
+	return false
+end
+
+function Map:setTile(x, y, l, tile)
+	self.layers[l]:setTile(x, y, tile)
+end
+function Map:createTile(x, y, l, texture)
+	return self.layers[l]:createTile(x, y, texture, self)
+end
+
+function Map:activate(x, y, player)
+	for _,layer in pairs(self.layers) do
+		local tile = layer:getTile(x, y)
+		if tile then
+			tile:activate(player)
+		end
+	end
+end
+
+--------------------------------------------------
+
+-- After all we only have 2 maps.
+
+function solidAt(x, y, inGhost)
+	return realMap:solidAt(x, y, inGhost) or ghostMap:solidAt(x, y, inGhost)
+end
+function activate(x, y, player)
+	realMap:activate(x, y, player)
+	ghostMap:activate(x, y, player)
+end
