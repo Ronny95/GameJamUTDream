@@ -1,6 +1,8 @@
 
 
-
+--[[
+	works like #include
+]]
 include = function(file)
 	love.filesystem.load(file)()
 end
@@ -45,6 +47,10 @@ function love.load()
 	ghostMap = Map:new()
 	
 	local floor = Layer:new()
+	--[[
+		MAPW and MAPH need to be able to change to be different sizes depending
+		on the level
+	]]
 	for x=1, MAPW do
 		for y=1, MAPH do
 			floor:setTile(x-1, y-1, Tile:new(x-1, y-1, textures[999], realMap))
@@ -70,8 +76,6 @@ function love.load()
 	ghost  = Player:new(0, 0, textures[10], ghostMap, true )
 	
 end
-
-
 
 function love.update(delta)
 	updateTiles(delta)
@@ -131,7 +135,10 @@ function getActivePlayer()
 end
 
 function changeForm()
-	if ghostMap:solidAt(player:getX(), player:getY(), true) then return false end
+	if ghostMap:solidAt(player:getX(), player:getY(), true) then 
+		return false 
+	end
+
 	inGhost = not inGhost
 	if inGhost then
 		ghost:setLocation(player:getX(), player:getY())

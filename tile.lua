@@ -163,8 +163,21 @@ function Tile:move(direction, notInMap)
 		
 		self.faceDir = moveDir
 		
-		local newX = self.x + moveDir.x
-		local newY = self.y + moveDir.y
+		local newX
+		local newY 
+
+		-- keeps the moveable objects from leaving the map area
+		if (self.x > 0 and moveDir.x == -1) or (self.x < MAPW and moveDir.x == 1) then
+			newX = self.x + moveDir.x
+		else
+			newX = self.x
+		end
+
+		if (self.y > 0 and moveDir.y == -1) or (self.y < MAPH and moveDir.y == 1) then
+			newY = self.y + moveDir.y
+		else
+			newY = self.y
+		end
 		
 		local solidTile = self.map:solidAt(newX, newY, self.isGhost)
 		if solidTile then
@@ -192,9 +205,17 @@ end
 --[[
 	activate and playerOn are extendable functions that can be overwritten
 ]]
-function Tile:activate(player) end
-function Tile:playerOn(player) end
-function Tile:playerPush(player) return false end
+function Tile:activate(player) 
+
+end
+
+function Tile:playerOn(player) 
+
+end
+
+function Tile:playerPush(player) 
+	return false 
+end
 
 include("tiles/player.lua")
 include("tiles/boulder.lua")

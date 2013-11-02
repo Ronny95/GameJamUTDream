@@ -17,13 +17,13 @@ function Player:update(delta)
 	self:_update(delta)
 	
 	if not self.moveDir then
-		if love.keyboard.isDown("w") or love.keyboard.isDown("up") then
+		if (love.keyboard.isDown("w") or love.keyboard.isDown("up")) and self.y > 0 then
 			self:move(90)
-		elseif love.keyboard.isDown("a") or love.keyboard.isDown("left") then
+		elseif (love.keyboard.isDown("a") or love.keyboard.isDown("left")) and self.x > 0 then
 			self:move(180)
-		elseif love.keyboard.isDown("s") or love.keyboard.isDown("down") then
+		elseif (love.keyboard.isDown("s") or love.keyboard.isDown("down")) and self.y < MAPH then
 			self:move(270)
-		elseif love.keyboard.isDown("d") or love.keyboard.isDown("right") then
+		elseif (love.keyboard.isDown("d") or love.keyboard.isDown("right")) and self.x < MAPW then
 			self:move(0)
 		end
 	end
