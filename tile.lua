@@ -8,10 +8,8 @@
 			that can be rendered to the screen
 ]]
 
--- a scaling constant for move speed
-MOVESCALE = 1
-
 local Tile = {}
+Tile.__index = Tile
 
 Tile.x = 0
 Tile.y = 0

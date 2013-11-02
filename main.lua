@@ -5,6 +5,10 @@ include = function(file)
 	love.filesystem.load(file)()
 end
 
+include("constants.lua")
+include("menu.lua")
+include("tile.lua")
+
 --------------------------------------------------
 
 textures = {
@@ -51,10 +55,10 @@ local Layer = {}
 Layer.__index = Map
 Layer.tiles = {}
 
-function Layer:setTileID(x, y, id)
+function Layer:setTile(x, y, tile)
 	tiles[x+","+y] = id
 end
-function Layer:getTileID(x, y)
+function Layer:getTile(x, y)
 	return tiles[x+","+y]
 end
 
@@ -80,3 +84,6 @@ end
 function love.draw()
 	
 end
+
+
+
