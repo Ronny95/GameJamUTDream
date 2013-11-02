@@ -8,7 +8,7 @@
 			that can be rendered to the screen
 ]]
 
-local Tile = {}
+Tile = table.copy(Base)
 Tile.__index = Tile
 
 Tile.x = 0
@@ -18,13 +18,10 @@ Tile.move_dir = nil
 Tile.moveX = 0
 Tile.moveY = 0
 
-function newTile(x, y, texture)
-	local tile = setmetatable({}, Tile)
-	tile.x = x
-	tile.y = y
-	tile.texture = texture
-
-	return tile
+function Tile:init(x, y, texture)
+	self.x = x
+	self.y = y
+	self.texture = texture
 end
 
 function Tile:draw()
@@ -46,27 +43,27 @@ function Tile:update(delta)
 	elseif self.move_dir == 1 then
 		self.moveY = self.moveY - MOVESCALE * delta
 	elseif self.move_dir == 2 then
-		self.moveX = self.moxe_x - MOVESCALE * delta
+		self.moveX = self.moveX - MOVESCALE * delta
 	elseif self.move_dir == 3 then
 		self.moveY = self.moveY + MOVESCALE * delta
 	end
 
-	if self.moveX ~= 0 and self.moveX > TILEW and self.move_dir == 0 then
+	if self.move_dir == 0 and self.moveX > TILEW then
 		self.moveX = 0
 		self.x = self.x + 1
 		self.move_dir = nil
 		removeUpdateTile(self)
-	elseif self.moveX ~= 0 and self.moveX > TILEW and self.move_dir == 2 then
+	elseif self.move_dir == 2 and self.moveX < -TILEW then
 		self.moveX = 0
 		self.x = self.x - 1
 		self.move_dir = nil
 		removeUpdateTile(self)
-	elseif self.moveY ~= 0 and self.moveY > TILEH and self.move_dir == 1 then
+	elseif self.move_dir == 1 and self.moveY < -TILEH then
 		self.moveY = 0
 		self.y = self.y - 1
 		self.move_dir = nil
 		removeUpdateTile(self)
-	elseif self.moveY ~= 0 and self.moveY > TILEH and self.move_dir == 3 then
+	elseif self.move_dir == 3 and self.moveY > TILEH then
 		self.moveY = 0
 		self.y = self.y + 1
 		self.move_dir = nil

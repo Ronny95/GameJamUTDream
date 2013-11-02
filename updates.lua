@@ -11,8 +11,8 @@ function removeUpdateTile(tile)
 		tiles[tile] = nil
 	end
 end
-function updateTiles()
+function updateTiles(delta)
 	for k,v in pairs(tiles) do
-		k:update()
+		k:update(delta)
 	end
 end

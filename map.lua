@@ -1,7 +1,11 @@
 
-local Layer = {}
+Layer = table.copy(Base)
 Layer.__index = Layer
 Layer.tiles = nil
+
+function Layer:init()
+	self.tiles = {}
+end
 
 function Layer:setTile(x, y, tile)
 	self.tiles[x+y*MAPW] = tile
@@ -15,9 +19,21 @@ function Layer:draw()
 	end
 end
 
-function newLayer()
-	local layer = setmetatable({}, Layer)
-	layer.tiles = {}
-	
-	return layer
+--------------------------------------------------
+
+Map = table.copy(Base)
+Map.__index = Map
+Map.layers = nil
+
+function Map:init()
+	self.layers = {}
 end
+
+function Map:setLayer(i, layer)
+	self.layers[i] = layer
+end
+function Map:getLayer(i, layer)
+	return self.layers[i]
+end
+
+
