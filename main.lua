@@ -1,10 +1,4 @@
 
-
-music = {
-	['dream'] = nil,--createNewMusic('dreammusic.ogg', 0.0)
-	['real'] = nil--createNewMusic('realmusic.ogg', 1.0)
-}
-
 --[[
 	works like #include
 ]]
@@ -26,6 +20,7 @@ include("texture.lua")
 include("updates.lua")
 include("tile.lua")
 include("map.lua")
+include("sound.lua")
 
 
 --include("menu.lua")
@@ -43,6 +38,9 @@ local bg
 
 function love.load()
 	love.graphics.setMode(WINW, WINH, false, true, 0)
+
+	love.audio.play(music['real'].audio)
+	music['real'].audio:setVolume(music['real'].volume)
 	
 	bg = love.graphics.newImage("assets/images/dreambg.png")
 	
@@ -95,6 +93,7 @@ end
 
 function love.update(delta)
 	updateTiles(delta)
+	updateSound()
 end
 
 local step = 0
@@ -194,9 +193,11 @@ function HSL(hue, saturation, lightness, alpha)
     return (r+m)*255,(g+m)*255,(b+m)*255,alpha
 end
 
-function createNewMusic(filePath, volume) 
-	local audio 
-	audio = love.audio.newSource(filePath)
-	audio.setVolume(volume)
-	return audio
+function updateSound()
+	if music['real'].audio:isLooping() and inGhost then
+		fadeSound(music['real'])
+	elseif music['dream'].audio:isLooping() and inGhost then
+		fadeSound(music['dream'])
+	end
 end
+
