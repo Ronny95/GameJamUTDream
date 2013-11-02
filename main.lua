@@ -7,44 +7,44 @@ end
 
 include("constants.lua")
 include("texture.lua")
+include("updates.lua")
 include("tile.lua")
-include("menu.lua")
+include("map.lua")
+
+
+--include("menu.lua")
 
 --------------------------------------------------
 
-local Layer = {}
-Layer.__index = Map
-Layer.tiles = {}
-
-function Layer:setTile(x, y, tile)
-	tiles[x+","+y] = id
-end
-function Layer:getTile(x, y)
-	return tiles[x+","+y]
-end
-
---------------------------------------------------
-
-local tile
+local layer
 
 function love.load()
+	love.graphics.setMode(WINW, WINH, false, true, 0)
+	
 	loadTileset("assets/images/tileset.png")
-	tile = newTile(0, 0, textures[1])
+	layer = newLayer()
+	
+	for x=1, MAPW do
+		for y=1, MAPH do
+			if y%2 == 1 then
+				layer:setTile(x-1, y-1, newTile(x-1, y-1, textures[1]))
+			else
+				layer:setTile(x-1, y-1, newTile(x-1, y-1, textures[2]))
+			end
+		end
+	end
+	
+	
 end
 
 function love.update(delta)
-	tile:update(delta)
+	
 end
 
 function love.draw()
-	tile:draw()
+	layer:draw()
 end
 
-function love.mousepressed(x, y, button)
-	if button == "l" then
-		tile:move(0)
-	end
-end
 
 
 

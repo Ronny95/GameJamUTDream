@@ -55,18 +55,22 @@ function Tile:update(delta)
 		self.moveX = 0
 		self.x = self.x + 1
 		self.move_dir = nil
+		removeUpdateTile(self)
 	elseif self.moveX ~= 0 and self.moveX > TILEW and self.move_dir == 2 then
 		self.moveX = 0
 		self.x = self.x - 1
 		self.move_dir = nil
+		removeUpdateTile(self)
 	elseif self.moveY ~= 0 and self.moveY > TILEH and self.move_dir == 1 then
 		self.moveY = 0
 		self.y = self.y - 1
 		self.move_dir = nil
+		removeUpdateTile(self)
 	elseif self.moveY ~= 0 and self.moveY > TILEH and self.move_dir == 3 then
 		self.moveY = 0
 		self.y = self.y + 1
 		self.move_dir = nil
+		removeUpdateTile(self)
 	end
 end
 
@@ -82,9 +86,13 @@ end
 function Tile:move(direction)
 	if direction <= 360 then
 		self.move_dir = math.floor(direction / 90 + 0.5)
+		addUpdateTile(self)
 	else
 		self.move_dir = nil
+		removeUpdateTile(self)
 	end
 end
+
+include("tiles/player.lua")
 
 
