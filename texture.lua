@@ -1,5 +1,6 @@
 
 -- Predefine all globals created by this class
+-- TODO: Minimize globals by making textures local and add a function called texture.get(...) instead.
 Texture = {}
 texture = {}
 textures = {}
