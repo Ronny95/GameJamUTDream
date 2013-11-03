@@ -34,7 +34,7 @@ function fadeSound(music_obj)
 	-- REAL
 	if music_obj == music['real'] then
 		if music['real'].volume > 0.0 then
-			music['real'].volume = music['real'].volume - 0.005
+			music['real'].volume = music['real'].volume - 0.01
 			love.audio.setVolume(music['real'].volume)
 		end
 
@@ -50,7 +50,7 @@ function fadeSound(music_obj)
 				love.audio.play(music['dream'].audio)
 			end
 
-			music['dream'].volume = music['dream'].volume + 0.005
+			music['dream'].volume = music['dream'].volume + 0.01
 			love.audio.setVolume(music['dream'].volume)
 		end
 	end
@@ -58,7 +58,7 @@ function fadeSound(music_obj)
 	-- DREAM
 	if music_obj == music['dream'] then
 		if music['dream'].volume > 0.0 then
-			music['dream'].volume = music['dream'].volume - 0.005
+			music['dream'].volume = music['dream'].volume - 0.01
 			love.audio.setVolume(music['dream'].volume)
 		end
 
@@ -74,7 +74,7 @@ function fadeSound(music_obj)
 				love.audio.play(music['real'].audio)
 			end
 
-			music['real'].volume = music['real'].volume + 0.005
+			music['real'].volume = music['real'].volume + 0.01
 			love.audio.setVolume(music['real'].volume)
 		end
 	end

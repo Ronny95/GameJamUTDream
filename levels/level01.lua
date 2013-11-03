@@ -1,32 +1,4 @@
 
---[[
-
-textures = {
-	[1 ] = { 0,  0}, -- Bed Top
-	[2 ] = { 0,  1}, -- Bed Bottom
-	
-	[3 ] = { 1,  0}, -- Spikes Blue
-	[4 ] = { 3,  1}, -- Spikes Red
-	
-	[5 ] = { 1,  1}, -- Boulder
-	[6 ] = { 6,  1}, -- Hole
-	[7 ] = { 7,  1}, -- Pressure Plate
-	
-	[8 ] = { 2,  1}, -- Star
-	[9 ] = { 4,  1}, -- Sign
-	[10] = { 5,  1}, -- Lantern
-	
-	[11] = { 4,  0}, -- Player Forward
-	[12] = { 5,  0}, -- Player Left
-	[13] = { 6,  0}, -- Player Right
-	[14] = { 7,  0}, -- Player Back
-	
-	[998] = {3, 0}, -- Dev Ghost Tile Blue
-	[999] = {2, 0}, -- Dev Real  Tile Grey
-}
-
-]]
-
 MAPW = 7
 MAPH = 7
 
@@ -37,7 +9,7 @@ local floor = Layer:new()
 
 for x=1, MAPW do
 	for y=1, MAPH do
-		floor:setTile(x-1, y-1, Tile:new(x-1, y-1, textures[999], realMap))
+		floor:setTile(x-1, y-1, Tile:new(x-1, y-1, textures["floor_a"], realMap))
 	end
 end
 
@@ -65,13 +37,13 @@ local function makeTile(class, x, y, tex, real, ghost, sreal, sghost, ...)
 	return tile
 end
 
-player = Player:new(3, 6, textures[ 5], realMap , false)
-ghost  = Player:new(0, 0, textures[10], ghostMap, true )
+player = Player:new(3, 6, -1, realMap , false)
+ghost  = Player:new(0, 0, -1, ghostMap, true )
 
-makeTile(Tile,  3,  2,  1,  true,  true,  true, false).activate = changeForm
-makeTile(Tile,  3,  3,  2,  true,  true,  true, false).activate = changeForm
+makeTile(Tile,  3,  2,  "bed_top",  true,  true,  true, false).activate = changeForm
+makeTile(Tile,  3,  3,  "bed_bottom",  true,  true,  true, false).activate = changeForm
 
-makeTile(Tile,  3,  0,  8, false,  true, false, false).playerOn = function(ply)
+makeTile(Tile,  3,  0,  "star", false,  true, false, false).playerOn = function(ply)
 	if ply.isGhost then
 		loadLevel("levels/level02.lua")
 	end

@@ -28,23 +28,32 @@ function Player:update(delta)
 		end
 	end
 	
-	if self.faceDir.x > 0 then
-		self.texture = textures[12]
-	elseif self.faceDir.x < 0 then
-		self.texture = textures[13]
-	elseif self.faceDir.y > 0 then
-		self.texture = textures[11]
+	-- TODO: Clean this up. Should be using a table instead of if, else, and elseifs.
+	if inGhost then
+		if self.faceDir.x > 0 then
+			self.texture = textures["ghost_right"]
+		elseif self.faceDir.x < 0 then
+			self.texture = textures["ghost_left"]
+		elseif self.faceDir.y > 0 then
+			self.texture = textures["ghost_forward"]
+		else
+			self.texture = textures["ghost_back"]
+		end
 	else
-		self.texture = textures[14]
+		if self.faceDir.x > 0 then
+			self.texture = textures["player_right"]
+		elseif self.faceDir.x < 0 then
+			self.texture = textures["player_left"]
+		elseif self.faceDir.y > 0 then
+			self.texture = textures["player_forward"]
+		else
+			self.texture = textures["player_back"]
+		end
 	end
 end
 
 Player._move = Player.move
 function Player:move(direction)
-	--[[if not self.move_dir then
-		self.faceDir = math.floor(direction / 90 + 0.5)
-	end]]
-	
 	local moved, block = self:_move(direction, true)
 	if moved then
 		self.map:playerOn(self:getX(), self:getY(), self)

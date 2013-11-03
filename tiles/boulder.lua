@@ -4,7 +4,7 @@ Boulder.__index = Boulder
 
 Boulder._init = Boulder.init
 function Boulder:init(x, y)
-	self:_init(x, y, textures[5], realMap)
+	self:_init(x, y, textures["boulder"], realMap)
 	self:setSolid(true, false)
 end
 

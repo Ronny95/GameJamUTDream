@@ -1,5 +1,28 @@
 
+local instructions
+local instructions
+local success
+local X
+local Y
+local speed
+local s
+local m
+local t
+local i
+local twidth
+local theight
+local width
+local height
+local iwidth
+local iheight
+local ewidth
+local eheight
+local instructWidth
+
 function love.load()
+  include("game.lua")
+  do return end
+  
    --hamster = love.graphics.newImage("hamster.png")
    instructions = false;
    instructionsText = "Controls \n\n Movement: ArrowKeys OR WASD \n Enter dream mode: E(Must be near a bed) \n Wake up:F \n  Quit:esc \n\n Instructions \n\n Solve puzzles and get to the star"
@@ -23,9 +46,9 @@ function love.load()
    --love.graphics.setBackgroundColor(125,125,255)
    love.graphics.setFont(mFont)
    background = love.graphics.newImage("assets/images/dreambg.png")
-   music = love.audio.newSource("assets/audio/dream.mp3")
-   music:setLooping(true)
-   love.audio.play(music)
+   --music = love.audio.newSource("assets/audio/dream.mp3")
+   --music:setLooping(true)
+   --love.audio.play(music)
 end
 
 function love.mousepressed(x, y, button)
@@ -87,7 +110,7 @@ function love.draw()
 
 	    --Ugly button1
 	    if love.mouse.isDown("l") and (love.mouse.getX()>X/2-width) and (love.mouse.getX()<X/2+width) and (love.mouse.getY()>Y/2) and (love.mouse.getY()<Y/2 + height *2) then
-	   		love.event.quit()
+	   		include("game.lua")
 		end
 		if (love.mouse.getX()>X/2-width) and (love.mouse.getX()<X/2+width) and (love.mouse.getY()>Y/2) and (love.mouse.getY()<Y/2 + height *2) then
 			love.graphics.setColor(244,61,217)
@@ -95,7 +118,7 @@ function love.draw()
 		end
 		--Ugly button2
 		if love.mouse.isDown("l") and (love.mouse.getX()>X/2-iwidth) and (love.mouse.getX()<X/2+iwidth) and (love.mouse.getY()>Y/2+80) and (love.mouse.getY()<Y/2+80 + iheight *2) then
-	   		instructions=true;
+	   		instructions=true
 		end
 		if (love.mouse.getX()>X/2-iwidth) and (love.mouse.getX()<X/2+iwidth) and (love.mouse.getY()>Y/2 + 80) and (love.mouse.getY()<Y/2 + 80+ iheight *2) then
 			love.graphics.setColor(244,61,217)
@@ -112,7 +135,7 @@ function love.draw()
 
 		love.graphics.setColor(255, 255,255)
 		love.graphics.setFont(tFont)
-	    love.graphics.printf("PLACEHOLDER TITLE",X/2-width, Y/2 - 6*theight, 125, "center")
+	    love.graphics.printf("HALF-LIFE 3",X/2-width, Y/2 - 6*theight, 125, "center")
 	    love.graphics.setFont(mFont)
 	    love.graphics.printf(s, X/2-width,Y/2, 125,"center")
 	 	love.graphics.printf("INSTRUCTIONS", X/2-iwidth, Y/2 + 80, 295, "center")

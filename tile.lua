@@ -165,27 +165,21 @@ function Tile:move(direction, notInMap)
 		
 		self.faceDir = moveDir
 		
-		local newX
-		local newY 
-
-		-- keeps the moveable objects from leaving the map area
-		if (self.x > 0 and moveDir.x == -1) or (self.x < MAPW - 1 and moveDir.x == 1) then
-			newX = self.x + moveDir.x
-		else
-			newX = self.x
-		end
-
-		if (self.y > 0 and moveDir.y == -1) or (self.y < MAPH - 1 and moveDir.y == 1) then
-			newY = self.y + moveDir.y
-		else
-			newY = self.y
-		end
+		local newX = self.x + moveDir.x
+		local newY = self.y + moveDir.y
 		
+		-- Player can't leave the map
+		if not self.map:tileAt(newX, newY, self.isGhost) then return false end
+		
+		-- Solid tile is in the way
 		local solidTile = self.map:solidAt(newX, newY, self.isGhost)
 		if solidTile then
 			return false, solidTile
 		end
 		
+		-- If the object is part of the map we will want to remove and replace the tile
+		-- spot it belongs to in the original map.
+		-- TODO: Find another way to detect objects that belong in the map.
 		if not notInMap then
 			self.map:removeTile(self.x, self.y, 2)
 			self.map:setTile(newX, newY, 2, self)
@@ -205,22 +199,33 @@ function Tile:move(direction, notInMap)
 end
 
 --[[
-	activate and playerOn are extendable functions that can be overwritten
+	On player activate event.
+	player can be _G.player or _G.ghost
 ]]
 function Tile:activate(player) 
 
 end
 
+--[[
+	Event triggered when a player is over the tile.
+	player can be _G.player or _G.ghost
+]]
 function Tile:playerOn(player)
 	
 end
 
+--[[
+	Event triggered when the player attempts to move into the object.
+	player can be _G.player or _G.ghost
+	
+	return true if the player can push, false otherwise.
+]]
 function Tile:playerPush(player) 
 	return false 
 end
 
 include("tiles/player.lua")
 include("tiles/boulder.lua")
-include("tiles/lever.lua")
+include("tiles/toggle.lua")
 
 

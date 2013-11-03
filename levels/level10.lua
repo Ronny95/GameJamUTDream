@@ -1,33 +1,4 @@
 
-
---[[
-
-textures = {
-	[1 ] = { 0,  0}, -- Bed Top
-	[2 ] = { 0,  1}, -- Bed Bottom
-	
-	[3 ] = { 1,  0}, -- Spikes Blue
-	[4 ] = { 3,  1}, -- Spikes Red
-	
-	[5 ] = { 1,  1}, -- Boulder
-	[6 ] = { 6,  1}, -- Hole
-	[7 ] = { 7,  1}, -- Pressure Plate
-	
-	[8 ] = { 2,  1}, -- Star
-	[9 ] = { 4,  1}, -- Sign
-	[10] = { 5,  1}, -- Lantern
-	
-	[11] = { 4,  0}, -- Player Forward
-	[12] = { 5,  0}, -- Player Left
-	[13] = { 6,  0}, -- Player Right
-	[14] = { 7,  0}, -- Player Back
-	
-	[998] = {3, 0}, -- Dev Ghost Tile Blue
-	[999] = {2, 0}, -- Dev Real  Tile Grey
-}
-
-]]
-
 MAPW = 24
 MAPH = 34
 
@@ -38,7 +9,7 @@ local floor = Layer:new()
 
 for x=1, MAPW do
 	for y=1, MAPH do
-		floor:setTile(x-1, y-1, Tile:new(x-1, y-1, textures[999], realMap))
+		floor:setTile(x-1, y-1, Tile:new(x-1, y-1, textures["floor_a"], realMap))
 	end
 end
 
@@ -74,7 +45,7 @@ local function makeTile(class, x, y, tex, real, ghost, sreal, sghost, layer)
 end
 
 local function makeLight(x, y)
-	local light = makeTile(Lever,  x,  y, 10,  true,  true,  true, false):setTextures(textures[8], textures[10]):setState(false)
+	local light = makeTile(Lever,  x,  y, 10,  true,  true,  true, false):setTextures(textures["lantern"], textures["star"]):setState(false)
 	
 	local function lightf(ply)
 		if inGhost and light:getState() then
@@ -105,18 +76,18 @@ local function makeLight(x, y)
 end
 
 
-local wa = 998
+local wa = "wall_a"
 local t = true
 local f = false
 
 
 local function makeBed(x, y)
-	makeTile(Tile,  x, y  ,  1, t, f, t, f).activate = changeForm
-	makeTile(Tile,  x, y+1,  2, t, f, t, f).activate = changeForm
+	makeTile(Tile,  x, y  ,  "bed_top", t, f, t, f).activate = changeForm
+	makeTile(Tile,  x, y+1,  "bed_bottom", t, f, t, f).activate = changeForm
 end
 
-player = Player:new(11, 33, textures[ 5], realMap , false)
-ghost  = Player:new(0, 0, textures[10], ghostMap, true )
+player = Player:new(11, 33, -1, realMap , false)
+ghost  = Player:new( 0,  0, -1, ghostMap, true )
 
 ---------------------------------------------------------------------------------------------------------
 
@@ -127,7 +98,6 @@ local redSpikes = {
 	{ 7, 27},
 	{ 7, 26},
 	{ 7, 25},
-	--{ 8, 25},
 	{ 9, 25},
 	
 	{17, 23},
@@ -147,7 +117,6 @@ local blueSpikes = {
 	{15, 27},
 	{15, 26},
 	{15, 25},
-	--{14, 25},
 	{13, 25},
 	
 	{ 6, 23},
@@ -160,30 +129,30 @@ local blueSpikes = {
 	{ 1, 23},
 }
 
-makeTile(Lever, 8, 28, wa, f, t, f, t):setTextures(textures[15], textures[16]):setChangeState(function(self, state)
+makeTile(Lever, 8, 28, -1, f, t, f, t):setTextures(textures["lever_red_off"], textures["lever_red_on"]):setChangeState(function(self, state)
 	for _,cord in pairs(redSpikes) do
 		if state then
-			makeTile(Tile, cord[1], cord[2], 4, t, f, t, f)
+			makeTile(Tile, cord[1], cord[2], "spikes_red", t, f, t, f)
 		else
 			realMap:removeTile(cord[1], cord[2], 2)
 		end
 	end
 end):setState(true)
-makeTile(Lever, 14, 28, wa, f, t, f, t):setTextures(textures[17], textures[18]):setChangeState(function(self, state)
+makeTile(Lever, 14, 28, -1, f, t, f, t):setTextures(textures["lever_blue_off"], textures["lever_blue_on"]):setChangeState(function(self, state)
 	for _,cord in pairs(blueSpikes) do
 		if state then
-			makeTile(Tile, cord[1], cord[2], 3, t, f, t, f)
+			makeTile(Tile, cord[1], cord[2], "spikes_blue", t, f, t, f)
 		else
 			realMap:removeTile(cord[1], cord[2], 2)
 		end
 	end
 end):setState(true)
-makeTile(Lever, 11, 28, wa, f, t, f, t):setTextures(textures[17], textures[18]):setChangeState(function(self, state)
+makeTile(Lever, 11, 28, -1, f, t, f, t):setTextures(textures["lever_blue_off"], textures["lever_blue_on"]):setChangeState(function(self, state)
 	if state then
-		makeTile(Tile, 9, 27, 3, t, f, t, f)
+		makeTile(Tile, 9, 27, "spikes_blue", t, f, t, f)
 		realMap:removeTile(13, 27, 2)
 	else
-		makeTile(Tile, 13, 27, 3, t, f, t, f)
+		makeTile(Tile, 13, 27, "spikes_blue", t, f, t, f)
 		realMap:removeTile(9, 27, 2)
 	end
 end):setState(true)
@@ -197,9 +166,9 @@ makeTile(Tile, 13, 29, wa, t, f, t, f)
 --makeTile(Tile, 13, 28, wa, t, f, t, f)
 makeTile(Tile, 12, 28, wa, t, f, t, f)
 
---makeTile(Boulder, 12, 30, 5, t, f, t, f)
---makeTile(Boulder, 11, 30, 5, t, f, t, f)
---makeTile(Boulder, 10, 30, 5, t, f, t, f)
+makeTile(Boulder, 12, 30, -1, t, f, t, f)
+makeTile(Boulder, 11, 30, -1, t, f, t, f)
+makeTile(Boulder, 10, 30, -1, t, f, t, f)
 
 makeTile(Tile,   8, 33, wa, t, f, t, f)
 makeTile(Tile,   8, 32, wa, t, f, t, f)
@@ -266,9 +235,7 @@ realMap:removeTile(20, 22, 2)
 makeBed( 8, 25)
 makeBed(14, 25)
 
----------------------------------------------------------------------------------------------------------
-
-player:setLocation(11, 21)
+----------------------------------------------------------------------------------------------------
 
 makeBed(11, 18)
 
@@ -294,7 +261,7 @@ makeTile(Tile, 12, 17, wa, t, f, t, f)
 makeLight(3, 18)
 makeLight(19, 18)
 
----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
 
 -- End
 makeTile(Tile,  0,  4,  8,  true, false, false, false).playerOn = function(ply)
